@@ -1,37 +1,37 @@
-const notes = ["C","D��","D","E��","E","F","G��","G","A��","A","B��","B"];
+const notes = ["C","D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
 const answerChoices = [
   {label:"C",note:"C"},
-  {label:"C��/D��",note:"D��"},
+  {label:"C♯/D♭",note:"D♭"},
   {label:"D",note:"D"},
-  {label:"E��",note:"E��"},
+  {label:"E♭",note:"E♭"},
   {label:"E",note:"E"},
   {label:"F",note:"F"},
-  {label:"F��/G��",note:"G��"},
+  {label:"F♯/G♭",note:"G♭"},
   {label:"G",note:"G"},
-  {label:"G��/A��",note:"A��"},
+  {label:"G♯/A♭",note:"A♭"},
   {label:"A",note:"A"},
-  {label:"A��/B��",note:"B��"},
+  {label:"A♯/B♭",note:"B♭"},
   {label:"B",note:"B"}
 ];
 const chordTypes = {
   major:{name:"",tones:[[0,"Root"],[4,"3rd"],[7,"5th"]]},
-  minor:{name:"m",tones:[[0,"Root"],[3,"��3rd"],[7,"5th"]]},
+  minor:{name:"m",tones:[[0,"Root"],[3,"♭3rd"],[7,"5th"]]},
   aug:{name:"aug",tones:[[0,"Root"],[4,"3rd"],[8,"#5th"]]},
-  dim:{name:"dim",tones:[[0,"Root"],[3,"��3rd"],[6,"��5th"]]},
+  dim:{name:"dim",tones:[[0,"Root"],[3,"♭3rd"],[6,"♭5th"]]},
   sus2:{name:"sus2",tones:[[0,"Root"],[2,"2nd"],[7,"5th"]]},
   sus4:{name:"sus4",tones:[[0,"Root"],[5,"4th"],[7,"5th"]]},
   power:{name:"5",tones:[[0,"Root"],[7,"5th"]]},
   omit3:{name:"(omit3)",tones:[[0,"Root"],[7,"5th"]]},
   slash3:{name:"",slash:true,bass:4,tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[4,"Bass"]]},
   slash5:{name:"",slash:true,bass:7,tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[7,"Bass"]]},
-  dom7:{name:"7",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"��7th"]]},
-  maj7:{name:"��7",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[11,"7th"]]},
-  min7:{name:"m7",tones:[[0,"Root"],[3,"��3rd"],[7,"5th"],[10,"��7th"]]},
-  halfdim:{name:"m7��5",tones:[[0,"Root"],[3,"��3rd"],[6,"��5th"],[10,"��7th"]]},
-  dim7:{name:"dim7",tones:[[0,"Root"],[3,"��3rd"],[6,"��5th"],[9,"���7th"]]},
-  nine:{name:"9",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"��7th"],[2,"9th"]]},
-  eleven:{name:"11",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"��7th"],[2,"9th"],[5,"11th"]]},
-  thirteen:{name:"13",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"��7th"],[2,"9th"],[5,"11th"],[9,"13th"]]},
+  dom7:{name:"7",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"♭7th"]]},
+  maj7:{name:"△7",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[11,"7th"]]},
+  min7:{name:"m7",tones:[[0,"Root"],[3,"♭3rd"],[7,"5th"],[10,"♭7th"]]},
+  halfdim:{name:"m7♭5",tones:[[0,"Root"],[3,"♭3rd"],[6,"♭5th"],[10,"♭7th"]]},
+  dim7:{name:"dim7",tones:[[0,"Root"],[3,"♭3rd"],[6,"♭5th"],[9,"♭♭7th"]]},
+  nine:{name:"9",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"♭7th"],[2,"9th"]]},
+  eleven:{name:"11",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"♭7th"],[2,"9th"],[5,"11th"]]},
+  thirteen:{name:"13",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[10,"♭7th"],[2,"9th"],[5,"11th"],[9,"13th"]]},
   add9:{name:"add9",tones:[[0,"Root"],[4,"3rd"],[7,"5th"],[2,"9th"]]}
 };
 const sets = {
@@ -41,7 +41,7 @@ const sets = {
   seventh:["dom7","maj7","min7","halfdim","dim7"],
   all:Object.keys(chordTypes)
 };
-const labels = {basic:"���W���[���}�C�i�[",major:"���W���[���S",minor:"�}�C�i�[���S",seventh:"7th �n",all:"���ׂč���"};
+const labels = {basic:"メジャー＆マイナー",major:"メジャー中心",minor:"マイナー中心",seventh:"7th 系",all:"すべて混合"};
 const $ = id => document.getElementById(id);
 const screens = {setup:$("setup"),game:$("game"),result:$("result")};
 let mode="basic", seconds=60, game, sound=true;
@@ -60,7 +60,7 @@ $("backBtn").addEventListener("click",() => show("setup"));
 $("soundBtn").addEventListener("click",() => {
   sound=!sound;
   $("soundBtn").setAttribute("aria-pressed",sound);
-  $("soundBtn").innerHTML=`�� <span>Sound ${sound?"on":"off"}</span>`;
+  $("soundBtn").innerHTML=`♪ <span>Sound ${sound?"on":"off"}</span>`;
 });
 
 function show(name){Object.entries(screens).forEach(([key,screen])=>screen.classList.toggle("hidden",key!==name));}
@@ -106,11 +106,11 @@ function answer(button){
   if(correct){
     game.correct++; game.streak++; game.best=Math.max(game.best,game.streak);
     const points=game.streak>=5?15:10; game.score+=points;
-    $("feedback").textContent=game.streak>=5?"�����I�A�������{�[�i�X +15":"�����I +10";
+    $("feedback").textContent=game.streak>=5?"正解！連続正解ボーナス +15":"正解！ +10";
     $("questionCard").classList.add("correct"); beep(660,.08);
   }else{
     game.wrong++; game.streak=0; button.classList.add("bad");
-    $("feedback").textContent=`������ ${game.answer}`; $("feedback").classList.add("bad");
+    $("feedback").textContent=`正解は ${game.answer}`; $("feedback").classList.add("bad");
     $("questionCard").classList.add("wrong"); beep(180,.13);
   }
   $("score").textContent=game.score; $("streak").textContent=game.streak;
@@ -125,10 +125,10 @@ function finish(){
   $("accuracy").textContent=`${accuracy}%`;
   $("best").textContent=game.best;
   $("message").textContent=accuracy>=85
-    ?"���΂炵���I�\���������Ȃ�g�ɂ��Ă��܂��B���́u���ׂč����v�Œ��킵�Ă݂悤�B"
+    ?"すばらしい！構成音がかなり身についています。次は「すべて混合」で挑戦してみよう。"
     :accuracy>=60
-      ?"�������q�I���ȃR�[�h�̃��[�h��I��ŁA������x�X�v�����g���悤�B"
-      :"�܂��̓��W���[���}�C�i�[���J��Ԃ����B���ɏo���ē�����ƁA�w�ł������₷���Ȃ�܂��B";
+      ?"いい調子！苦手なコードのモードを選んで、もう一度スプリントしよう。"
+      :"まずはメジャー＆マイナーを繰り返そう。声に出して答えると、指板でも見つけやすくなります。";
   show("result");
 }
 function beep(freq,duration){
@@ -141,4 +141,3 @@ function beep(freq,duration){
     osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime+duration);
   }catch(e){}
 }
-
